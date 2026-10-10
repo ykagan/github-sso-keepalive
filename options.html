@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>GitHub SSO Keepalive</title>
+  <style>
+    :root { color-scheme: light dark; }
+    body { font: 14px/1.5 system-ui, sans-serif; max-width: 760px; margin: 24px auto; padding: 0 16px; }
+    h1 { font-size: 20px; }
+    h2 { font-size: 16px; margin-top: 28px; }
+    label { display: block; margin: 8px 0; }
+    input[type="number"] { width: 60px; }
+    table { border-collapse: collapse; width: 100%; margin: 8px 0; }
+    th, td { text-align: left; padding: 4px 6px; border-bottom: 1px solid #8884; }
+    td input[type="text"] { width: 100%; box-sizing: border-box; }
+    .hint { color: #888; font-size: 13px; }
+    #status-box { padding: 10px 12px; border: 1px solid #8886; border-radius: 6px; }
+    #status-box.error { border-color: #cf222e; }
+    #status-box.ok { border-color: #2da44e; }
+    #saved { color: #2da44e; margin-left: 8px; }
+  </style>
+</head>
+<body>
+  <h1>GitHub SSO Keepalive</h1>
+
+  <div id="status-box">
+    <strong>Status:</strong> <span id="status">loading…</span>
+    <div style="margin-top: 6px">
+      <button id="check">Check now</button>
+      <button id="open-sso" hidden>Open SSO page</button>
+    </div>
+  </div>
+
+  <h2>Settings</h2>
+  <label><input type="checkbox" id="enabled"> Enabled</label>
+  <label>Check session every <input type="number" id="pollMinutes" min="0.5" step="0.5"> minutes</label>
+  <label><input type="checkbox" id="onlyWhenGithubOpen"> Only check while a github.com tab is open</label>
+  <label>
+    Also re-authenticate proactively every <input type="number" id="proactiveMinutes" min="0" step="1"> minutes
+    <span class="hint">(0 = off. Try 12 for a 15-minute IdP timeout so you never see the SSO page.)</span>
+  </label>
+
+  <h2>Organizations / enterprises</h2>
+  <p class="hint">
+    Added automatically the first time you land on an SSO page. The probe path should be a page that GitHub
+    gates behind SSO (a private repo works well); it is fetched to detect when the session has expired.
+  </p>
+  <table>
+    <thead><tr><th>Type</th><th>Slug</th><th>Probe path</th><th>Last re-auth</th><th></th></tr></thead>
+    <tbody id="targets"></tbody>
+  </table>
+  <button id="add">Add</button>
+
+  <p><button id="save">Save</button><span id="saved"></span></p>
+
+  <script src="options.js"></script>
+</body>
+</html>
